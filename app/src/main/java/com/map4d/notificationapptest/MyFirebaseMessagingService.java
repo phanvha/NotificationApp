@@ -1,10 +1,14 @@
 package com.map4d.notificationapptest;
 
+import android.app.Notification;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.map4d.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +19,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        super.onMessageReceived(remoteMessage);
+        Notification notification = new NotificationCompat.Builder(this)
+                .setContentTitle(remoteMessage.getNotification().getTitle())
+                .setContentText(remoteMessage.getNotification().getBody())
+                .setSmallIcon(R.
+                        mipmap.ic_launcher)
+                .build();
+        NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
+        manager.notify(123, notification);
         if (remoteMessage.getData().size() > 0) {
             Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
             try {
@@ -25,7 +38,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
         }
     }
+    @Override
+    public void onNewToken(String token) {
+        Log.d(TAG, "Refreshed token: " + token);
 
+        sendRegistrationToServer(token);
+    }
+
+    private void sendRegistrationToServer(String token) {
+        // TODO: Implement this method to send token to your app server.
+    }
     //this method will display the notification
     //We are passing the JSONObject that is received from
     //firebase cloud messaging
