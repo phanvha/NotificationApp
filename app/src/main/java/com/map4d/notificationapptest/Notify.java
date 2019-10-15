@@ -6,7 +6,6 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.map4d.R;
 
 public class Notify extends FirebaseMessagingService {
     @Override

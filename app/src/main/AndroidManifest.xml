@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.map4d">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.map4d.notificationapptest">
 
     <application
         android:allowBackup="true"
@@ -8,9 +9,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".notificationapptest.SecondActivity"></activity>
-        <activity android:name=".notificationapptest.MainActivity">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,12 +19,15 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".notificationapptest.MyFirebaseInstanceIDService">
+        <service android:name=".FireBaseIDTask"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".notificationapptest.MyFirebaseMessagingService">
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
