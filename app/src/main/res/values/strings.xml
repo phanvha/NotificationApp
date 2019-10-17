@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NotificationAPPTest</string>
+    <string name="To_do">To do</string>
+    <string name="save">Save</string>
 </resources>

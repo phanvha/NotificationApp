@@ -23,7 +23,7 @@ public class FireBaseIDTask extends AsyncTask<String, Void, Boolean> {
 
             try {
 
-                URL url = new URL("http://localhost/fcm/register.php?Token=" + params[0]);
+                URL url = new URL("https://vbusapp.000webhostapp.com/save.php?token=" + params[0]);
                 //Toast.makeText(MainActivity.class,"hello",Toast.LENGTH_LONG).show();
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");

@@ -1,6 +1,8 @@
 package com.map4d.notificationapptest;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,6 +19,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.map4d.model.Data;
+import com.map4d.service.APIClient;
+import com.map4d.utils.APIInterface;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,44 +33,61 @@ import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    String token;
-    Data data;
+    private String token;
+    FloatingActionButton fb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        FirebaseMessaging.getInstance().subscribeToTopic("test");
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( MainActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+        fb = findViewById(R.id.add);
+        fb.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                String newToken = instanceIdResult.getToken();
-                Log.d("newToken1",newToken);
-                token = newToken;
-                Log.d("newToken1",token);
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                startActivity(intent);
+            }
+        });
+        getToken();
+        FirebaseMessaging.getInstance().subscribeToTopic("notificationapptest");
+        token= FirebaseInstanceId.getInstance().getToken();
+        String email = "nacac";
+        saveToken(email ,token);
+        Log.e("ahcajcacwcaca",""+token);
+    }
+    public void getToken(){
+        FirebaseMessaging.getInstance().subscribeToTopic("notificationapptest");
+        token= FirebaseInstanceId.getInstance().getToken();
+        new FireBaseIDTask().execute(token);
+        Log.e("ahcajc",""+token);
+
+    }
+    private void saveToken(String email, String Token) {
+        APIInterface apiInterface = APIClient.getAPIClient().create(APIInterface.class);
+        Call<Data> call = apiInterface.savetoken(email,Token);
+        call.enqueue(new Callback<Data>() {
+            @Override
+            public void onResponse(Call<Data> call, Response<Data> response) {
+                Log.e("aefbehfakaakcanjcbe",response.body().toString());
+                if (response.isSuccessful() && response.body()!=null){
+                    Toast.makeText(getApplicationContext(),response.body().toString(),Toast.LENGTH_SHORT).show();
+                }else {
+                    Log.d("Error","lỗi");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Data> call, Throwable t) {
+                Log.e("aefbehfakaakcanjcbe",t.toString());
+                Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
 
-    }
-    private void registerToken() {
-        Log.d("Firebase", "token "+ FirebaseInstanceId.getInstance().getToken());
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder()
-                .add("Token",token)
-                .build();
-
-        okhttp3.Request request = new Request.Builder()
-                .url("http://127.0.0.1/fcm/register.php")
-                .post(body)
-                .build();
-
-        try {
-            client.newCall(request).execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
