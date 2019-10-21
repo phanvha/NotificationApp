@@ -13,6 +13,15 @@ public class Data {
     @SerializedName("token")
     @Expose
     private String token;
+    @SerializedName("error")
+    @Expose
+    private Boolean error;
+    @SerializedName("message")
+    @Expose
+    private String message;
+    @SerializedName("success")
+    @Expose
+    private int success;
 //    @SerializedName("Success")
 //    @Expose
 //    private Boolean Success;
@@ -23,6 +32,35 @@ public class Data {
     public Data(String email, String token) {
         this.email = email;
         this.token = token;
+    }
+
+    public Data(Boolean error, String message) {
+        this.error = error;
+        this.message = message;
+    }
+
+    public int getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(int success) {
+        this.success = success;
+    }
+
+    public Boolean getError() {
+        return error;
+    }
+
+    public void setError(Boolean error) {
+        this.error = error;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public Data() {

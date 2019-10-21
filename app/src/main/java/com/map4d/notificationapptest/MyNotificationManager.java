@@ -45,17 +45,17 @@ public class MyNotificationManager {
         bigPictureStyle.bigPicture(getBitmapFromURL(url));
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx);
         Notification notification;
+        Uri uri = RingtoneManager.getDefaultUri(R.raw.notification);
         notification = mBuilder.setSmallIcon(R.mipmap.ic_launcher).setTicker(title).setWhen(0)
                 .setAutoCancel(true)
                 .setContentIntent(resultPendingIntent)
                 .setContentTitle(title)
                 .setStyle(bigPictureStyle)
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setSound(uri)
                 .setLargeIcon(BitmapFactory.decodeResource(mCtx.getResources(), R.mipmap.ic_launcher))
                 .setContentText(message)
                 .build();
-        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        mBuilder.setSound(uri);
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
         NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);

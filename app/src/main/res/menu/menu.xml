@@ -2,8 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="@string/save"
-        android:id="@+id/save"
+        android:title="Đăng ký"
+        android:id="@+id/savelayout"/>
+    <item android:id="@+id/sendlayout"
+        android:title="Gửi Tin"/>
+    <item android:id="@+id/save"
         android:icon="@drawable/ic_save"
+        android:title="@string/save"
         app:showAsAction="always"/>
 </menu>
